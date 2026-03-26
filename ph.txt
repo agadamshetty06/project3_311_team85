@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+=======
+for meeting
+
+
+
+>>>>>>> ad5b0f3 (10 minutes SCRUM meeting, Agenda: Look at the description for project 3)
