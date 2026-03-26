@@ -4,4 +4,8 @@ for meeting
 
 
 
+<<<<<<< HEAD
 >>>>>>> ad5b0f3 (10 minutes SCRUM meeting, Agenda: Look at the description for project 3)
+=======
+
+>>>>>>> fb69dfc (10 minutes SCRUM meeting, Agenda: Do all neccessary work for the SCRUM 1 Release)
