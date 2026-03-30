@@ -13,7 +13,8 @@ export default function MenuBoard() {
     description: 'Clear',
     location: 'College Station',
     icon: '01d',
-    loading: true
+    loading: true,
+    isRealData: false
   });
 
   useEffect(() => {
@@ -42,7 +43,10 @@ export default function MenuBoard() {
           {weather.loading ? (
             'Loading weather...'
           ) : (
-            `${getWeatherEmoji(weather.icon)} ${weather.temperature}°F ${weather.location}`
+            <span>
+              {getWeatherEmoji(weather.icon)} {weather.temperature}°F {weather.location}
+              {!weather.isRealData && <span style={{ color: '#ff6b6b', fontSize: '14px', marginLeft: '8px' }}>(API inactive)</span>}
+            </span>
           )}
         </div>
       </header>

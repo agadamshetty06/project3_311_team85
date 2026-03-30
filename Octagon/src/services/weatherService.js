@@ -24,7 +24,8 @@ export const getCurrentWeather = async () => {
       temperature: Math.round(response.data.main.temp),
       description: response.data.weather[0].main,
       icon: response.data.weather[0].icon,
-      location: 'College Station'
+      location: 'College Station',
+      isRealData: true
     };
   } catch (error) {
     console.error('Error fetching weather:', error);
@@ -33,7 +34,8 @@ export const getCurrentWeather = async () => {
       temperature: 75,
       description: 'Clear',
       icon: '01d',
-      location: 'College Station'
+      location: 'College Station',
+      isRealData: false
     };
   }
 };
