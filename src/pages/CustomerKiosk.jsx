@@ -12,7 +12,11 @@ const mockMenu = [
 export default function CustomerKiosk() {
   const [cart, setCart] = useState([]);
 
-  const addToCart = (item) => setCart([...cart, item]);
+  const addToCart = (item) => {
+    setCart([...cart, item]);
+    console.log(`Added ${item.name} to cart`);
+  };
+  
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
