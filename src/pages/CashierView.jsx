@@ -25,7 +25,7 @@ export default function CashierView() {
             <button 
               key={item.id} 
               onClick={() => addItem(item)}
-              style={{ padding: '20px', width: '150px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', transition: 'transform 0.1s' }}
+              style={{ padding: '20px', width: '150px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold'}}
             >
               {item.name}
             </button>
