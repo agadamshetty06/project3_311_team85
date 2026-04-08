@@ -38,6 +38,10 @@ export default function CustomerKiosk() {
     setCart([...cart, item]);
   };
 
+  const removeFromCart = (indexToRemove) => {
+    setCart(cart.filter((_, index) => index !== indexToRemove));
+  };
+
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + Number(item.price), 0).toFixed(2);
   };
@@ -82,17 +86,46 @@ export default function CustomerKiosk() {
             <>
               <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0' }}>
                 {cart.map((item, index) => (
-                  <li key={index} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>
-                    <span>{item.name}</span>
-                    <span>${Number(item.price).toFixed(2)}</span>
+                  <li key={index} style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 80px 30px', 
+                    alignItems: 'center', 
+                    marginBottom: '10px', 
+                    borderBottom: '1px solid #ddd', 
+                    paddingBottom: '10px',
+                    gap: '10px'
+                  }}>
+                    <span style={{ textAlign: 'left' }}>{item.item_name}</span>
+                    <span style={{ textAlign: 'right' }}>${Number(item.price).toFixed(2)}</span>
+                    <button 
+                      onClick={() => removeFromCart(index)} 
+                      style={{ 
+                        background: '#e65a5a', 
+                        color: 'white', 
+                        border: 'none', 
+                        borderRadius: '50%', 
+                        width: '24px', 
+                        height: '24px', 
+                        cursor: 'pointer', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        fontWeight: 'bold',
+                        padding: 0,
+                        marginLeft: 'auto'
+                      }}
+                      aria-label={`Remove ${item.item_name} from cart`}
+                    >
+                      ×
+                    </button>
                   </li>
                 ))}
               </ul>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2em', fontWeight: 'bold', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.4em', fontWeight: 'bold', marginBottom: '20px' }}>
                 <span>{t('customer.total')}:</span>
                 <span>${calculateTotal()}</span>
               </div>
-              <button style={{ width: '100%', padding: '15px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', fontSize: '1.1em', cursor: 'pointer' }}>
+              <button style={{ width: '100%', padding: '15px', backgroundColor: '#5c9c5f', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1.2em', cursor: 'pointer', fontWeight: 'bold' }}>
                 {t('customer.payNow')}
               </button>
             </>
