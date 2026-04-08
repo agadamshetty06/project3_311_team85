@@ -1,60 +1,92 @@
-import { useState } from 'react';
-
-const mockMenu = [
-  { id: 1, name: 'Classic Milk Tea', price: 4.50 },
-  { id: 2, name: 'Brown Sugar Boba', price: 5.50 },
-  { id: 3, name: 'Taro Slush', price: 5.25 },
-  { id: 4, name: 'Matcha Latte', price: 5.00 },
-  { id: 5, name: 'Passionfruit Green Tea', price: 4.75 },
-  { id: 6, name: 'Thai Tea', price: 4.75 },
-];
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CustomerKiosk() {
+  const navigate = useNavigate();
+  
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await fetch('/api/menu');
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        setMenuItems(data);
+      } catch (error) {
+        console.error('Error fetching menu:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenu();
+  }, []);
 
   const addToCart = (item) => {
     setCart([...cart, item]);
-    console.log(`Added ${item.name} to cart`);
   };
-  
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + Number(item.price), 0).toFixed(2);
+  };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'sans-serif' }}>
-      {/* Menu Grid */}
-      <div style={{ flex: 2, padding: '20px', backgroundColor: '#f9f9f9' }}>
-        <h2>Touch to Order</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
-          {mockMenu.map((item) => (
-            <button 
-              key={item.id} 
-              onClick={() => addToCart(item)}
-              style={{ padding: '30px', fontSize: '18px', borderRadius: '12px', border: '1px solid #ddd', cursor: 'pointer', backgroundColor: 'white' }}
-            >
-              <strong>{item.name}</strong><br/>
-              ${item.price.toFixed(2)}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
+      <button 
+        onClick={() => navigate('/')} 
+        style={{ marginBottom: '20px', padding: '10px 15px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '5px' }}
+      >
+        ← Back to Portal
+      </button>
 
-      {/* Cart Sidebar */}
-      <div style={{ flex: 1, padding: '20px', backgroundColor: '#fff', borderLeft: '2px solid #eee', display: 'flex', flexDirection: 'column' }}>
-        <h2>Your Order</h2>
-        <div style={{ flexGrow: 1, overflowY: 'auto' }}>
-          {cart.length === 0 ? <p>Tap an item to add it.</p> : null}
-          {cart.map((item, idx) => (
-            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0', fontSize: '18px' }}>
-              <span>{item.name}</span>
-              <span>${item.price.toFixed(2)}</span>
+      <div style={{ display: 'flex', gap: '40px' }}>
+        <div style={{ flex: '2' }}>
+          <h1>Order Here</h1>
+          {loading ? (
+            <p>Loading menu...</p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
+              {menuItems.map((item) => (
+                <div 
+                  key={item.id} 
+                  onClick={() => addToCart(item)}
+                  style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center', backgroundColor: '#fafafa', transition: '0.2s' }}
+                >
+                  <h3 style={{ margin: '0 0 10px 0' }}>{item.item_name}</h3>
+                  <strong style={{ color: '#2c3e50' }}>${Number(item.price).toFixed(2)}</strong>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        <div style={{ borderTop: '2px solid #333', padding: '20px 0' }}>
-          <h3>Total: ${total.toFixed(2)}</h3>
-          <button style={{ width: '100%', padding: '15px', fontSize: '20px', backgroundColor: '#aa3bff', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
-            Pay Now
-          </button>
+
+        <div style={{ flex: '1', backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', border: '1px solid #eee', height: 'fit-content' }}>
+          <h2>Your Cart</h2>
+          {cart.length === 0 ? (
+            <p style={{ color: '#888' }}>Tap items to add to cart</p>
+          ) : (
+            <>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0' }}>
+                {cart.map((item, index) => (
+                  <li key={index} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', borderBottom: '1px solid #ddd', paddingBottom: '5px' }}>
+                    <span>{item.name}</span>
+                    <span>${Number(item.price).toFixed(2)}</span>
+                  </li>
+                ))}
+              </ul>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2em', fontWeight: 'bold', marginBottom: '20px' }}>
+                <span>Total:</span>
+                <span>${calculateTotal()}</span>
+              </div>
+              <button style={{ width: '100%', padding: '15px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', fontSize: '1.1em', cursor: 'pointer' }}>
+                Checkout
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
