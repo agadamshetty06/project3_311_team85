@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TextSizeToggle from '../components/TextSizeToggle';
 import { useI18n } from '../i18n/I18nProvider';
 import { useA11y } from '../a11y/A11yProvider';
+import Chatbot from '../components/Chatbot';
 
 export default function CustomerKiosk() {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ export default function CustomerKiosk() {
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '1200px', margin: '0 auto', fontSize: baseFontSize }}>
       <TextSizeToggle />
+      <Chatbot />
       <button 
         onClick={() => navigate('/')} 
         style={{ marginBottom: '20px', padding: '10px 15px', cursor: 'pointer', backgroundColor: '#f0f0f0', border: '1px solid #ccc', borderRadius: '5px' }}
