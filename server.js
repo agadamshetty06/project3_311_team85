@@ -161,7 +161,7 @@ app.post('/api/chat', async (req, res) => {
 
     // 2. Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
     // 3. Create context-aware prompt
     const prompt = `You are a helpful and friendly AI assistant for a restaurant kiosk. 
