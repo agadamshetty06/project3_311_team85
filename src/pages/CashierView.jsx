@@ -11,7 +11,7 @@ const mockMenu = [
 export default function CashierView() {
   const [orderTicket, setOrderTicket] = useState([]);
 
-  const addItem = (item) => setOrderTicket([...orderTicket, item]);
+  const addItem = (item) => setOrderTicket(prev => [...prev, item]);
   const clearTicket = () => setOrderTicket([]);
   const total = orderTicket.reduce((sum, item) => sum + item.price, 0);
 
