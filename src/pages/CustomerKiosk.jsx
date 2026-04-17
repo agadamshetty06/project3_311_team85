@@ -5,17 +5,27 @@ import { useI18n } from '../i18n/I18nProvider';
 import { useA11y } from '../a11y/A11yProvider';
 import Chatbot from '../components/Chatbot';
 
+/**
+ * CustomerKiosk Component
+ * 
+ * A customer-facing ordering interface for self-service ordering.
+ * Features menu browsing, cart management, and AI chatbot assistance.
+ * Integrates with accessibility features for text size scaling and
+ * internationalization for multi-language support.
+ */
 export default function CustomerKiosk() {
   const navigate = useNavigate();
-  const { t } = useI18n();
-  const { textSize } = useA11y();
+  const { t } = useI18n(); // Translation function
+  const { textSize } = useA11y(); // Text size from accessibility context
   
-  const baseFontSize = textSize === 'large' ? '1.2em' : '1em';
+  const baseFontSize = `${textSize}em`; // Dynamic font size based on user preference
   
-  const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState([]);
+  // Component state
+  const [menuItems, setMenuItems] = useState([]); // Available menu items from API
+  const [loading, setLoading] = useState(true); // Loading state for menu fetch
+  const [cart, setCart] = useState([]); // Customer's shopping cart
 
+  // Fetch menu items from API on component mount
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -34,20 +44,24 @@ export default function CustomerKiosk() {
     fetchMenu();
   }, []);
 
+  // Add item to customer's cart
   const addToCart = (item) => {
     setCart([...cart, item]);
   };
 
+  // Remove item from cart by index
   const removeFromCart = (indexToRemove) => {
     setCart(cart.filter((_, index) => index !== indexToRemove));
   };
 
+  // Calculate total price of all items in cart
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + Number(item.price), 0).toFixed(2);
   };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '1200px', margin: '0 auto', fontSize: baseFontSize }}>
+      {/* Accessibility and AI components */}
       <TextSizeToggle />
       <Chatbot />
       <button 
@@ -58,6 +72,7 @@ export default function CustomerKiosk() {
       </button>
 
       <div style={{ display: 'flex', gap: '40px' }}>
+        {/* Menu Display Section */}
         <div style={{ flex: '2' }}>
           <h1>{t('customer.title')}</h1>
           {loading ? (
@@ -78,6 +93,7 @@ export default function CustomerKiosk() {
           )}
         </div>
 
+        {/* Shopping Cart Section */}
         <div style={{ flex: '1', backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', border: '1px solid #eee', height: 'fit-content' }}>
           <h2>{t('customer.yourOrder')}</h2>
           {cart.length === 0 ? (
