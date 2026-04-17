@@ -38,11 +38,21 @@ export default function CashierView() {
         <h2>Current Ticket</h2>
         <div style={{ flexGrow: 1, border: '1px solid #eee', padding: '10px', marginBottom: '10px', overflowY: 'auto' }}>
           {orderTicket.map((item, idx) => (
-            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0' }}>
+            <div 
+              key={idx}
+              onClick={() => removeItem(idx)}
+              style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                padding: '5px 0',
+                cursor: 'pointer'
+              }}
+            >
               <span>{item.name}</span>
               <span>${item.price.toFixed(2)}</span>
             </div>
           ))}
+
         </div>
         <h3>Total: ${total.toFixed(2)}</h3>
         <div style={{ display: 'flex', gap: '10px' }}>
