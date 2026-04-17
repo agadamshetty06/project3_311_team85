@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextSizeToggle from '../components/TextSizeToggle';
+import Chatbot from '../components/Chatbot';
 import { useI18n } from '../i18n/I18nProvider';
 import { useA11y } from '../a11y/A11yProvider';
 
@@ -307,6 +308,9 @@ export default function CustomerKiosk() {
           )}
         </div>
       </div>
+      
+      {/* Chatbot Component */}
+      <Chatbot />
     </div>
   );
 }
